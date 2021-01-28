@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	android:id="@+id/bg_item"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:background="?attr/selectableItemBackground"
+	android:clickable="true"
+	android:focusable="true"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical">
+
+	<androidx.cardview.widget.CardView
+		android:layout_height="85dp"
+		android:layout_width="match_parent"
+		app:cardCornerRadius="8dp"
+		android:layout_margin="4dp"
+		app:cardElevation="3dp">
+
+		<ImageView
+			android:id="@+id/image_view"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:scaleType="centerCrop"
+			android:src="@drawable/ic_launcher_background"/>
+
+	</androidx.cardview.widget.CardView>
+
+	<RelativeLayout
+		android:id="@+id/bg_text"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		android:paddingRight="8dp"
+		android:paddingLeft="8dp">
+
+		<LinearLayout
+			android:id="@+id/up_line_text"
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:orientation="horizontal">
+
+			<TextView
+				android:id="@+id/app_name"
+				android:layout_height="wrap_content"
+				android:layout_width="wrap_content"
+				android:singleLine="true"
+				android:ellipsize="marquee" 
+				android:marqueeRepeatLimit="marquee_forever"
+				android:textColor="?attr/android:textColorPrimary"
+				android:text="appname"
+				android:textSize="14sp"
+				android:textStyle="bold"
+				android:layout_weight="1.0"/>
+
+			<TextView
+				android:id="@+id/size_name"
+				android:layout_height="wrap_content"
+				android:layout_width="wrap_content"
+				android:singleLine="true"
+				android:padding="2dp"
+				android:textColor="#FFFFFF"
+				android:background="@drawable/bg_text_size"
+				android:text="sizename"
+				android:textSize="8sp"/>
+
+		</LinearLayout>
+
+		<TextView
+			android:id="@+id/ver_name"
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:layout_below="@+id/up_line_text"
+			android:singleLine="true"
+			android:color="?attr/android:textColorSecondary"
+			android:text="vername"
+			android:textSize="8sp"/>
+
+	</RelativeLayout>
+
+</LinearLayout>
+

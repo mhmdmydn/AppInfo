@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item 
+		android:icon="@drawable/ic_open" 
+		android:id="@+id/open" 
+		android:title="Open" />
+	<item 
+		android:icon="@drawable/ic_backup" 
+		android:id="@+id/extract" 
+		android:title="Extract" />
+	<item 
+		android:icon="@drawable/ic_link" 
+		android:id="@+id/sharelink" 
+		android:title="Share Link" />
+	<item 
+		android:icon="@drawable/ic_share" 
+		android:id="@+id/shareapk" 
+		android:title="Share Apk" />
+	<item 
+		android:icon="@drawable/ic_play_store" 
+		android:id="@+id/playstore" 
+		android:title="Play Store" />
+	<item 
+		android:icon="@drawable/ic_delete" 
+		android:id="@+id/uninstall" 
+		android:title="Uninstall" />
+	<item 
+		android:icon="@drawable/ic_info" 
+		android:id="@+id/info" 
+		android:title="Info" />
+	
+</menu>

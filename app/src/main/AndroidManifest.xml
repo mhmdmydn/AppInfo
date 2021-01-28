@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='utf-8'?>
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.del.app.manager">
+
+    <!--mengubah atau menghapus konten kartu SD Anda-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <!--baca konten kartu SD Anda-->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <!--akses jaringan penuh-->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <!--Minta pemasangan paket file-->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+
+    <!--INSTALL_PACKAGES-->
+    <uses-permission android:name="android.permission.INSTALL_PACKAGES"/>
+
+    <!--lihat sambungan jaringan-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+    <application
+        android:allowBackup="true"
+        android:name="com.del.app.manager.App"
+        android:icon="@drawable/ic_launcher"
+        android:roundIcon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme"
+        android:resizeableActivity="false">
+
+        <activity
+            android:name="com.del.app.manager.activity.SplashScreen"
+            android:theme="@style/AppTheme.Launcher"
+            android:label="@string/app_name">
+
+            <intent-filter>
+
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+
+            </intent-filter>
+
+        </activity>
+
+        <activity
+            android:name="com.del.app.manager.activity.MainActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name"/>
+
+        <activity
+            android:name="com.del.app.manager.activity.DebugActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.del.app.manager.activity.MoreDetailActivity"
+            android:label="Detail App"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.del.app.manager.activity.SettingActivity"
+            android:screenOrientation="portrait"/>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/paths"/>
+
+        </provider>
+
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="4.0"/>
+
+    </application>
+
+</manifest>

@@ -51,7 +51,8 @@
             android:label="@string/app_name"/>
 
         <activity
-            android:name="com.del.app.manager.activity.DebugActivity"
+            android:label="App Crash"
+            android:name="com.del.app.manager.util.CrashHandler$CrashActiviy"
             android:screenOrientation="portrait"/>
 
         <activity

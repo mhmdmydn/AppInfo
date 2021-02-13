@@ -1,69 +1,25 @@
 package com.del.app.manager;
 
-import android.app.AlarmManager;
 import android.app.Application;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
-import com.del.app.manager.activity.DebugActivity;
-import com.del.app.manager.util.HelperSharedPref;
-import androidx.appcompat.app.AppCompatDelegate;
+import com.del.app.manager.util.CrashHandler;
 
 public class App extends Application {
 	
-	private Thread.UncaughtExceptionHandler uncaughtExceptionHandler;
-	private String numMode;
+	private static App singleton = null;
+
+    public static App getInstance(){
+        if(singleton == null){
+            singleton = new App();
+        }
+        return singleton;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        singleton = this;
+        CrashHandler.init(singleton);
+    }
 	
-	@Override
-	public void onCreate() {
-		try {
-			numMode = new HelperSharedPref(this).loadStringFromSharedPref("Theme");
-			switch(numMode){
-				case "0":
-					AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-
-					break;
-				case "1":
-					AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-					break;
-				case "2":
-					AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-					break;
-			}
-		} catch (Exception e) {
-
-		}
-		this.uncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
-		Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-				@Override
-				public void uncaughtException(Thread thread, Throwable ex) {
-					Intent intent = new Intent(getApplicationContext(), DebugActivity.class);
-					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-					intent.putExtra("error", getStackTrace(ex));
-					PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 11111, intent, PendingIntent.FLAG_ONE_SHOT);
-					AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-					am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, 1000, pendingIntent);
-					android.os.Process.killProcess(android.os.Process.myPid());
-					System.exit(2);
-					uncaughtExceptionHandler.uncaughtException(thread, ex);
-				}
-			});
-		super.onCreate();
-	}
-	private String getStackTrace(Throwable th) {
-		final Writer result = new StringWriter();
-		final PrintWriter printWriter = new PrintWriter(result);
-		Throwable cause = th;
-		while (cause != null) {
-			cause.printStackTrace(printWriter);
-			cause = cause.getCause();
-		}
-		final String stacktraceAsString = result.toString();
-		printWriter.close();
-		return stacktraceAsString;
-	}
 }

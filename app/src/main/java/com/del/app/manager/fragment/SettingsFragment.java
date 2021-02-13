@@ -12,11 +12,10 @@ import com.del.app.manager.util.HelperSharedPref;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceGroup;
-import com.del.app.manager.task.UpdaterTask;
 import android.content.Intent;
 import com.del.app.manager.activity.SplashScreen;
 
-public class FragmentSetting extends PreferenceFragment implements
+public class SettingsFragment extends PreferenceFragment implements
 SharedPreferences.OnSharedPreferenceChangeListener {
 	
 	private HelperSharedPref sharedPref;
@@ -24,9 +23,8 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 	private SwitchPreference switchPref;
 	private ListPreference listPref;
 	private Preference prefSendFeedback, checkupdate;
-	private UpdaterTask updaterTask;
     
-	public FragmentSetting(){
+	public SettingsFragment(){
 		// Required empty public constructor
 	}
 

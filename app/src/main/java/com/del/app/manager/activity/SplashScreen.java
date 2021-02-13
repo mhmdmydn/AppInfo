@@ -13,12 +13,10 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import com.del.app.manager.util.HelperSharedPref;
 import androidx.appcompat.app.AppCompatDelegate;
-import com.del.app.manager.task.UpdaterTask;
 import com.del.app.manager.util.MainUtils;
-import com.del.app.manager.task.ApkUpdate;
-import com.del.app.manager.Interface.UpdateListener;
 import androidx.appcompat.app.AlertDialog;
 import android.content.DialogInterface;
+import com.del.app.manager.task.DelAppUpdate;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -61,11 +59,12 @@ public class SplashScreen extends AppCompatActivity {
 	}
 
 	private void initLogic(){
-        new ApkUpdate(this, URL, new UpdateListener(){
+			
+		new DelAppUpdate(SplashScreen.this, new DelAppUpdate.UpdateListener(){
 
-                @Override
-                public void onJsonDataReceived(final int newVersionCode, final String changeLog, final String URLdown) {
-                    if (ApkUpdate.getCurrentVersionCode(SplashScreen.this) < newVersionCode) {
+				@Override
+				public void onResponse(int newVersion, String changeLog, final String UrlDownload) {
+					if (DelAppUpdate.getCurrentVersionCode(SplashScreen.this) < newVersion) {
                         new AlertDialog.Builder(SplashScreen.this)
                             .setTitle("Update available")
                             .setMessage(changeLog)
@@ -73,7 +72,7 @@ public class SplashScreen extends AppCompatActivity {
                             .setPositiveButton("Update", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    ApkUpdate.downloadNewApp(SplashScreen.this, URLdown);
+                                    DelAppUpdate.startDownloadApp(SplashScreen.this, UrlDownload);
                                 }
                             })
                             .show();
@@ -88,13 +87,23 @@ public class SplashScreen extends AppCompatActivity {
                                 }
                             }, 3500);
                     }
-                }
+				}
 
-                @Override
-                public void onError(String error) {
-                    
-                }
-            }).execute();
+				@Override
+				public void onError(String error) {
+					if(error == "No Connection"){
+						new Handler().postDelayed(new Runnable(){
+                                @Override
+                                public void run() {
+                                    Intent next = new Intent();
+                                    next.setClass(getApplicationContext(), MainActivity.class);
+                                    startActivity(next);
+                                    finishAffinity();
+                                }
+                            }, 3500);
+					}
+				}
+			}).execute(URL);
 	}
     
    private void showPermission(){

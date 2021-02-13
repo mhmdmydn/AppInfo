@@ -54,7 +54,7 @@ public class ApkUtils {
     }
 
     /**
-     * App Info
+     * App Setting
      */
     public static void infoScreen(Context context, String apkPackageName) {
         Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
@@ -134,47 +134,11 @@ public class ApkUtils {
         }
         return null;
     }
-
-    private static boolean isValid(List<PackageInfo> packageInfos) {
-        return packageInfos != null && !packageInfos.isEmpty();
-    }
 	
 	public static boolean isSystemPackage(ApplicationInfo applicationInfo) {
         return (applicationInfo.flags & 1) != 0;
     }
 	
-    public static HashMap<String, String> getAllInstalledApkFiles(Context context) {
-        HashMap<String, String> installedApkFilePaths = new HashMap<>();
-
-        PackageManager packageManager = context.getPackageManager();
-        @SuppressLint("WrongConstant") List<PackageInfo> packageInfoList = packageManager.getInstalledPackages(PackageManager.SIGNATURE_MATCH);
-
-        if (isValid(packageInfoList)) {
-            for (PackageInfo packageInfo : packageInfoList) {
-                ApplicationInfo applicationInfo;
-
-                applicationInfo = getApplicationInfoFrom(packageManager, packageInfo);
-				
-				String appName = packageManager.getApplicationLabel(packageInfo.applicationInfo).toString();
-                String packageName = applicationInfo.packageName;
-                String versionName = packageInfo.versionName;
-                int versionCode = packageInfo.versionCode;
-				Drawable icon = packageInfo.applicationInfo.loadIcon(packageManager);
-                File apkFile = new File(applicationInfo.publicSourceDir);
-				installedApkFilePaths.put("app_name", appName);
-				installedApkFilePaths.put("app_packName", packageName);
-				installedApkFilePaths.put("app_versionName", versionName);
-				installedApkFilePaths.put("app_versionCode", String.valueOf(versionCode));
-				installedApkFilePaths.put("app_icon", icon.toString());
-				installedApkFilePaths.put("app_size", bytesToMB(apkFile.length()));
-                if (apkFile.exists()) {
-					installedApkFilePaths.put("app_path", apkFile.getAbsolutePath());
-                }
-            }
-        }
-
-        return installedApkFilePaths;
-    }
 	
 	public static List<ModelApk> getAllApk(Context context, boolean z) {
         List<ModelApk> arrayList = new ArrayList();
@@ -219,22 +183,6 @@ public class ApkUtils {
             }
         }
         return arrayList;
-    }
-	
-	
-    private static ApplicationInfo getApplicationInfoFrom(PackageManager
-														  packageManager, PackageInfo packageInfo) {
-        return packageInfo.applicationInfo;
-    }
-
-    public static File getApkFile(Context context, String packageName) {
-        HashMap<String, String> installedApkFilePaths = getAllInstalledApkFiles(context);
-        File apkFile = new File(installedApkFilePaths.get(packageName));
-        if (apkFile.exists()) {
-            return apkFile;
-        }
-
-        return null;
     }
 	
 	public static File getAppFile(Context context, String packageName){
@@ -341,7 +289,7 @@ public class ApkUtils {
 		try {
 			lastUpdate = con.getPackageManager().getPackageInfo(pName, 0).lastUpdateTime;
 		} catch (PackageManager.NameNotFoundException e) {
-			
+			e.getMessage();
 		}
 		return lastUpdate;
 	}

@@ -7,8 +7,8 @@ import androidx.viewpager.widget.ViewPager;
 import android.os.Bundle;
 import android.view.View;
 import com.del.app.manager.adapter.TabsFragmentPagerAdapter;
-import com.del.app.manager.fragment.FragmentUser;
-import com.del.app.manager.fragment.FragmentSystem;
+import com.del.app.manager.fragment.UserFragment;
+import com.del.app.manager.fragment.SystemFragment;
 import com.del.app.manager.R;
 import com.del.app.manager.util.MainUtils;
 import android.os.Handler;
@@ -62,8 +62,8 @@ public class MainActivity extends AppCompatActivity {
 	
 	private void addFragmentsToViewPager(final ViewPager viewPager) {
         TabsFragmentPagerAdapter adapter = new TabsFragmentPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new FragmentUser(), "Installed");
-        adapter.addFragment(new FragmentSystem(), "System");
+        adapter.addFragment(new UserFragment(), "Installed");
+        adapter.addFragment(new SystemFragment(), "System");
         viewPager.setAdapter(adapter);
 		viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 		tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){

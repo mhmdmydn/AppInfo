@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import android.view.View;
-import com.del.app.manager.fragment.FragmentSetting;
+import com.del.app.manager.fragment.SettingsFragment;
 import com.del.app.manager.util.HelperSharedPref;
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -52,7 +52,7 @@ public class SettingActivity extends AppCompatActivity {
 		getFragmentManager()
 			.beginTransaction()
 			.replace(R.id.setting_content,
-					 new FragmentSetting()).commit();
+					 new SettingsFragment()).commit();
 	}
 
 	private void initView() {

@@ -1,4 +1,5 @@
 package com.del.app.manager.fragment;
+
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.fragment.app.Fragment;
 import android.os.Bundle;
@@ -11,100 +12,83 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import androidx.appcompat.widget.SearchView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import com.del.app.manager.adapter.RecySysAdapter;
 import android.os.Handler;
-import com.del.app.manager.task.SystemAppTask;
-import com.del.app.manager.Interface.ResultTask;
 import java.util.List;
-import com.del.app.manager.model.ModelApk;
+import com.del.app.manager.model.AppModel;
 import java.util.Collections;
 import java.util.Comparator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import android.view.animation.LayoutAnimationController;
 import android.view.animation.AnimationUtils;
-import com.del.app.manager.util.MainUtils;
+import com.del.app.manager.util.MainUtil;
 import android.content.Intent;
 import com.del.app.manager.activity.SettingActivity;
 import android.app.Activity;
-import com.del.app.manager.util.HelperSharedPref;
+import com.del.app.manager.util.SharedPref;
 import android.graphics.Color;
+import com.del.app.manager.adapter.AppAdapter;
+import com.del.app.manager.loader.AppTask;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import com.unity3d.services.banners.BannerView;
+import com.unity3d.services.banners.UnityBannerSize;
 
-public class SystemFragment extends Fragment {
-
+public class SystemFragment extends BaseFragment {
+	
     private RecyclerView mRecyclerview;
 	private SwipeRefreshLayout swipeRefreshLayout;
-	private RecySysAdapter  sAdapter;
-	private String numMode;
-    
-	public SystemFragment() {
-        // Required empty public constructor
-	}
-
-	public static SystemFragment newInstance(){
-		SystemFragment fragmentSys = new SystemFragment();
+	private AppAdapter  adapter;
+	private boolean isSystem = true;
+	private ProgressBar pb;
+	private RelativeLayout linearUnityAds;
+	private BannerView bottomBanner;
+	
+	public static SystemFragment newInstance(boolean z){
+		SystemFragment sysFragment = new SystemFragment();
 		Bundle args = new Bundle();
-		fragmentSys.setArguments(args);
-		return fragmentSys;
+		args.putBoolean("isSystem", z);
+		sysFragment.setArguments(args);
+		return sysFragment;
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
+		if(getArguments() != null){
+			this.isSystem = getArguments().getBoolean("isSystem", this.isSystem);
+		}
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_system, container, false);
+		View v = inflater.inflate(R.layout.fragment_system, container, false);
+		initView(v);
+		initLogic(v);
+		initListener(v);
+		return v;
+		
+	}
+	@Override
+	public void initView(View v) {
+		mRecyclerview = (RecyclerView)v.findViewById(R.id.recycler_view_system);
+		swipeRefreshLayout =(SwipeRefreshLayout)v.findViewById(R.id.swipe_system); 
+		pb = (ProgressBar)v.findViewById(R.id.progress_bar);
+		linearUnityAds = (RelativeLayout)v.findViewById(R.id.banner_ads_view);
+	}
+
+
+	@Override
+	public void initLogic(View v) {
+		bottomBanner = new BannerView(getActivity(), getResources().getString(R.string.unity_banner), new UnityBannerSize(320, 50));
+        linearUnityAds.addView(bottomBanner);
+        bottomBanner.load();
+		loadAppSystem();
 	}
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		initView();
-        themeSwipe();
-		refreshContent();
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		initLogic();
-	}
-	
-	private void initView(){
-		mRecyclerview = (RecyclerView)getActivity().findViewById(R.id.recycler_view_system);
-		swipeRefreshLayout =(SwipeRefreshLayout)getActivity().findViewById(R.id.swipe_system); 
-	}
-	
-	private void initLogic(){
-		SystemAppTask appSystem = new SystemAppTask(getActivity(), new ResultTask(){
-				@Override
-				public void sysAppFinised(List<ModelApk> userApp) {
-					
-					Collections.sort(userApp, new Comparator<ModelApk>() {
-							@Override
-							public int compare(ModelApk lhs, ModelApk rhs) {
-								return lhs.getName().compareTo(rhs.getName());
-							}
-						});
-					if(getActivity() != null){
-						RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 4);
-						mRecyclerview.setLayoutManager(layoutManager);
-						sAdapter = new RecySysAdapter(getActivity(), userApp);
-						mRecyclerview.setHasFixedSize(true);
-						mRecyclerview.setAdapter(sAdapter);
-						LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getActivity(), R.anim.layout_anim_bottom); 
-						mRecyclerview.setLayoutAnimation(animation); 
-						sAdapter.notifyDataSetChanged();
-					}
-				}
-			});
-			appSystem.execute();
-	}
-	
-	private void refreshContent(){
-        swipeRefreshLayout.setColorSchemeColors(Color.BLUE, Color.YELLOW, Color.RED);
+	public void initListener(View v) {
+		swipeRefreshLayout.setColorSchemeColors(Color.BLUE, Color.YELLOW, Color.RED);
 		swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() { 
 				@Override 
 				public void onRefresh() { 
@@ -112,31 +96,40 @@ public class SystemFragment extends Fragment {
 							@Override 
 							public void run() { 
 								swipeRefreshLayout.setRefreshing(false); 
-								initLogic();
+								loadAppSystem();
 							} 
 						}, 2000); 
 				} 
 			}); 
 	}
-    
-    private void themeSwipe(){
-        try {
-            numMode = new HelperSharedPref(getActivity()).loadStringFromSharedPref("Theme");
-            switch(numMode){
-                case "0":
-                    swipeRefreshLayout.setProgressBackgroundColorSchemeColor(R.color.colorPrimaryDark);
-                    break;
-                case "1":
-                    swipeRefreshLayout.setProgressBackgroundColorSchemeColor(R.color.colorPrimaryDarkNight);
-                    break;
-                case "2":
+	
+	private void loadAppSystem(){
+		mRecyclerview.setVisibility(View.GONE);
+		AppTask appTask = new AppTask(getActivity(), this.isSystem, pb, new AppTask.TaskListenter(){
 
-                    break;
-            }
-        } catch (Exception e) {
-
-		}
-    }
+				@Override
+				public void onTaskResult(List<AppModel> list) {
+					Collections.sort(list, new Comparator<AppModel>() {
+							@Override
+							public int compare(AppModel lhs, AppModel rhs) {
+								return lhs.getName().compareTo(rhs.getName());
+							}
+						});
+					if (getActivity() != null) {
+						mRecyclerview.setVisibility(View.VISIBLE);
+						mRecyclerview.setHasFixedSize(true);
+						GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 4);
+						adapter = new AppAdapter(getActivity(), list);
+						mRecyclerview.setLayoutManager(layoutManager);
+						mRecyclerview.setAdapter(adapter);
+						LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getActivity(), R.anim.layout_anim_bottom); 
+						mRecyclerview.setLayoutAnimation(animation); 
+						adapter.notifyDataSetChanged();
+					}
+				}
+			});
+		appTask.execute();
+	}
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -153,7 +146,7 @@ public class SystemFragment extends Fragment {
 				@Override
 				public boolean onQueryTextChange(String newText) {
 					if(newText != null){
-						sAdapter.getFilter().filter(newText);
+					    adapter.getFilter().filter(newText);
 					}
 					return false;
 				}
@@ -170,10 +163,5 @@ public class SystemFragment extends Fragment {
 			default:
 				return super.onOptionsItemSelected(item);
 		}
-	}
-
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
 	}
 }

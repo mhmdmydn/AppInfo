@@ -11,55 +11,38 @@ import android.util.Log;
 import android.content.pm.PackageManager;
 import androidx.core.app.ActivityCompat;
 import android.Manifest;
-import com.del.app.manager.util.HelperSharedPref;
+import com.del.app.manager.util.SharedPref;
 import androidx.appcompat.app.AppCompatDelegate;
-import com.del.app.manager.util.MainUtils;
+import com.del.app.manager.util.MainUtil;
 import androidx.appcompat.app.AlertDialog;
 import android.content.DialogInterface;
-import com.del.app.manager.task.DelAppUpdate;
+import com.del.app.manager.loader.DelAppUpdate;
 
-public class SplashScreen extends AppCompatActivity {
-
-    
+public class SplashScreen extends BaseActivity {
+ 
     private ImageView img;
     private TextView text;
-	private String numMode;
-    private static String URL = "https://raw.githubusercontent.com/MuhammadMayudin/myapk/main/test.json";
+    private static String URL = "https://raw.githubusercontent.com/mhmdmydn/DaftarKoleksiAplikasi/main/test.json";
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-		try {
-			numMode = new HelperSharedPref(this).loadStringFromSharedPref("Theme");
-			switch(numMode){
-				case "0":
-					AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-					
-					break;
-				case "1":
-					AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-					break;
-				case "2":
-					AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-					break;
-			}
-		} catch (Exception e) {
-
-		}
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         initView();
+		initListener();
         showPermission();
+		
+		MainUtil.changeActivityFont(this, "sans_medium");
 	}
     
-    private void initView(){
-	
-    img = (ImageView)findViewById(R.id.app_logo);
-    text = (TextView)findViewById(R.id.app_name);
-	
+	@Override
+	public void initView() {
+		img = (ImageView)findViewById(R.id.app_logo);
+		text = (TextView)findViewById(R.id.app_name);
 	}
 
-	private void initLogic(){
-			
+	@Override
+	public void initLogic() {
 		new DelAppUpdate(SplashScreen.this, new DelAppUpdate.UpdateListener(){
 
 				@Override
@@ -85,7 +68,7 @@ public class SplashScreen extends AppCompatActivity {
                                     startActivity(next);
                                     finishAffinity();
                                 }
-                            }, 3500);
+                            }, 1500);
                     }
 				}
 
@@ -104,6 +87,11 @@ public class SplashScreen extends AppCompatActivity {
 					}
 				}
 			}).execute(URL);
+	}
+
+	@Override
+	public void initListener() {
+
 	}
     
    private void showPermission(){

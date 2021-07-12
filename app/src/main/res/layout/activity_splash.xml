@@ -3,7 +3,6 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
-	android:textColor="@color/colorPrimary"
 	android:orientation="vertical"
 	android:gravity="center">
 
@@ -17,8 +16,8 @@
 		<ImageView
 			android:id="@+id/app_logo"
 			android:src="@drawable/ic_launcher"
-			android:layout_height="100dp"
-			android:layout_width="100dp"/>
+			android:layout_height="@dimen/size_100"
+			android:layout_width="@dimen/size_100"/>
 
 	</LinearLayout>
 
@@ -32,9 +31,9 @@
 			android:id="@+id/app_name"
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
-			android:textColor="?attr/android:textColorPrimary"
 			android:textStyle="normal"
-			android:textSize="14sp"
+			android:textSize="@dimen/text_size_14"
+			android:textColor="?attr/primaryTitleColor"
 			android:text="@string/develop"/>
 
 	</LinearLayout>

@@ -1,44 +1,62 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<LinearLayout
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto" 
-	android:layout_width="fill_parent" 
-	android:layout_height="wrap_content" 
-	android:background="?attr/selectableItemBackground"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:id="@+id/card_news"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:layout_margin="@dimen/margin4"
+	android:foreground="?attr/selectableItemBackgroundBorderless"
 	android:clickable="true"
 	android:focusable="true"
-	android:orientation="vertical"
-	android:layout_margin="4dp" >
+	app:cardCornerRadius="@dimen/card_elevation_4">
 	
-	<LinearLayout 
-		android:orientation="horizontal" 
-		android:layout_width="match_parent" 
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="horizontal">
+	<View
+		android:id="@+id/divider_list"
+		android:layout_width="@dimen/margin4"
+		android:layout_height="fill_parent"
+		android:background="@color/colorLine"/>
+
+	<LinearLayout
+		android:id="@+id/linear_text"
+		android:orientation="vertical"
+		android:background="?attr/primaryCardBackgroundColor"
+		android:padding="@dimen/padding"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content">
-		
-		<TextView  
-			android:textSize="14sp"
-			android:textColor="?attr/android:textColorPrimary" 
-			android:id="@+id/tv_title" 
-			android:layout_weight="1"
-			android:layout_width="80dp" 
-			android:layout_height="wrap_content" />
-	
-		<TextView 
-			android:textSize="10sp"
-			android:textColor="#9E9E9E" 
-			android:id="@+id/tv_value" 
+
+		<TextView
+			android:id="@+id/tv_title"
+			android:textSize="@dimen/text_size_16"
+			android:textColor="?attr/primaryTitleColor"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+
+		<TextView
+			android:id="@+id/tv_value"
+			android:textSize="@dimen/text_size_14"
+			android:textColor="?attr/primaryDescriptionColor"
+			android:visibility="visible"
 			android:singleLine="true"
-			android:layout_width="wrap_content" 
-			android:layout_height="wrap_content" />
+			android:textIsSelectable="true"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+
+		<androidx.recyclerview.widget.RecyclerView
+			android:id="@+id/rv_list"
+			android:layout_marginTop="@dimen/size_10"
+			android:layout_marginLeft="@dimen/size_10"
+			android:layout_marginRight="@dimen/size_10"
+			android:visibility="gone"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"/>
 		
+    	</LinearLayout>
+	
 	</LinearLayout>
 	
-	<androidx.recyclerview.widget.RecyclerView 
-		android:id="@+id/rv_list" 
-		android:layout_marginLeft="10dp"
-		android:layout_marginRight="10dp"
-		android:layout_width="match_parent" 
-		android:layout_height="wrap_content" />
-	
-</LinearLayout>
-
+</androidx.cardview.widget.CardView>

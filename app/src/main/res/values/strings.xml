@@ -1,10 +1,21 @@
 <resources>
     <string name="app_name">AppInfoX</string>
-	
-	<string name="storage">/storage/emulated/0/DelAppManager</string>
+
 	<string name="exit_dua_kali">Press again to exit</string>
-	<string name="develop">Develop by Ghodel</string>
+	<string name="develop">Created with ❤️ by ghodel</string>
 	<string name="link_json">https://raw.githubusercontent.com/MuhammadMayudin/myapk/main/test.json</string>
+	
+	<string name="package_name">package</string>
+	<string name="version">version</string>
+	<string name="size">size</string>
+	
+	<!--unity ads--> 
+	<string name="unity_id">4039515</string>
+	<string name="unity_banner">banner</string>
+	<string name="unity_video">video</string>
+	<string name="unity_interstitial">interstitial</string>
+	<string name="unity_rewardedVideo">rewardedVideo</string>
+	
 	<!--Setting Preference-->
 	<!--general-->
 	<string name="header_title_advanced">Advanced</string>
@@ -12,23 +23,19 @@
 	<string name="title_notification">Notification</string>
 	<string name="title_change_theme">Change Theme</string>
 	
-	
-	
-	<string name="summary_default_storage">DelAppManager</string>
+	<string name="storage">/storage/emulated/0/</string>
+	<string name="folder_path">AppInfoX</string>
+	<string name="summary_path">/storage/emulated/0/AppInfoX</string>
 	<string name="summary_notification">Enabled</string>
 	<!--about-->
 	<string name="header_title_about"> About</string>
 	
 	<string name="title_app_version">Version</string>
-	<string name="title_report_bug">Report a bug</string>
-	<string name="title_tos">Terms &amp; Conditions</string>
+	<string name="title_developer">Developer</string>
 	<string name="title_privacy_policy">Privacy Policy</string>
 	
-	<string name="summary_about_app">AppInfoX is a mobile application that functions to store a list of your applications and share a list of applications, you can also see what permission requests are given by the application.</string>
 	<string name="summary_app_version">1.0</string>
-	<string name="summary_report_bug">Tap to report any bug (or) issue found in this app</string>
+	<string name="summary_developer">ghodel-dev</string>
 	
-	<string name="url_privacy">https://github.com</string>
-	<string name="url_terms">https://github.com</string>
-	
+	<string name="url_developer">https://github.com/ghodel-dev</string>
 </resources>

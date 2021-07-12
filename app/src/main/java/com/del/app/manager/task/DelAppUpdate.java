@@ -276,8 +276,8 @@ public class DelAppUpdate extends AsyncTask<String, String, JSONObject> {
     }
 
     public static interface UpdateListener{
-        void onResponse(int newVersion, String changeLog, String UrlDownload)
-        void onError(String error)
+        void onResponse(int newVersion, String changeLog, String UrlDownload);
+        void onError(String error);
     }
 
 }

@@ -2,155 +2,60 @@ package com.del.app.manager.fragment;
 
 import com.del.app.manager.R;
 import android.preference.PreferenceFragment;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageInfo;
+import android.preference.PreferenceScreen;
 import android.preference.Preference;
+import com.del.app.manager.util.MainUtil;
 import android.preference.EditTextPreference;
 import android.preference.SwitchPreference;
 import android.preference.ListPreference;
-import com.del.app.manager.util.MainUtils;
-import com.del.app.manager.util.HelperSharedPref;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.preference.PreferenceGroup;
-import android.content.Intent;
-import com.del.app.manager.activity.SplashScreen;
+import android.preference.PreferenceManager;
+import com.del.app.manager.util.SharedPref;
 
-public class SettingsFragment extends PreferenceFragment implements
-SharedPreferences.OnSharedPreferenceChangeListener {
+public class SettingsFragment extends PreferenceFragment implements 
+    SharedPreferences.OnSharedPreferenceChangeListener {
 	
-	private HelperSharedPref sharedPref;
-	private EditTextPreference etPref;
-	private SwitchPreference switchPref;
-	private ListPreference listPref;
-	private Preference prefSendFeedback, checkupdate;
-    
-	public SettingsFragment(){
-		// Required empty public constructor
+	private static String THEME = "theme";
+	private static String NOTIF = "notif_key";
+	private static String FOLDER = "folder_name";
+	private SharedPreferences sharedPref;
+	private SharedPref sp;
+	
+	
+	public SettingsFragment newIsntance(){
+		SettingsFragment settingFragment = new SettingsFragment();
+		Bundle args = new Bundle();
+		settingFragment.setArguments(args);
+		return settingFragment;
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.preference);
-		sharedPref = new HelperSharedPref(getActivity());
-		initSummary(getPreferenceScreen());
-		
-		checkupdate = (Preference)findPreference("check_update");
-		checkupdate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
-
-				@Override
-				public boolean onPreferenceClick(Preference p1) {
-					//updaterTask = new UpdaterTask(getActivity(), true);
-					return true;
-				}
-			});
-		
-		prefSendFeedback = (Preference)findPreference("report_bug");
-		prefSendFeedback.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
-
-				@Override
-				public boolean onPreferenceClick(Preference p1) {
-					MainUtils.sendFeedback(getActivity());
-					return true;
-				}
-			});
-		
-//		listPref = (ListPreference)findPreference("example_list");
-//		listPref.setOnPreferenceChangeListener(new ListPreference.OnPreferenceChangeListener(){
-//
-//				@Override
-//				public boolean onPreferenceChange(Preference pref, Object newValue) {
-//                    listPref.setDefaultValue(newValue.toString());
-//					pref.setSummary(listPref.getEntry());
-//					try {
-//						sharedPref.saveToSharedPref("Theme", newValue.toString());
-//                        MainUtils.restart(getActivity());
-//					} catch (Exception e) {
-//					}
-//					return true;
-//				}
-//			});
-			
-		switchPref = (SwitchPreference)findPreference("notif_key");
-        try {
-            switchPref.setDefaultValue(sharedPref.loadBooleanFromSharedPref("Notif"));
-            switchPref.setSummary(sharedPref.loadBooleanFromSharedPref("Notif")== false ? "Disabled" : "Enabled");
-        } catch (Exception e) {
-            
-        }
-		switchPref.setOnPreferenceClickListener(new SwitchPreference.OnPreferenceClickListener(){
-
-                @Override
-                public boolean onPreferenceClick(Preference pref) {
-                    boolean off= ((SwitchPreference) pref).isChecked();
-                    try {
-                        sharedPref.saveToSharedPref("Notif", off);
-                        switchPref.setSummary(off == false ? "Disabled" : "Enabled");
-                    } catch (Exception e) {
-                        
-                    }
-                    return false;
-                }
-            });
+		sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		sp = new SharedPref(getActivity());
+		MainUtil.debugShared(sharedPref);
+		setUpAppVersion();
+	    setSummaryPath();
 	}
 	
 	
 	
 	@Override
-	public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
-		updatePrefSummary(findPreference(key));
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+		if(key.equals(THEME)){
+			MainUtil.restartActivity(getActivity());
+		}
+		if(key.equals(FOLDER)){
+			findPreference(FOLDER).setSummary(getResources().getString(R.string.storage) + sp.getPath());
+		}
 		
 	}
-	
-	private void initSummary(Preference p) {
-        if (p instanceof PreferenceGroup) {
-            PreferenceGroup pGrp = (PreferenceGroup) p;
-            for (int i = 0; i < pGrp.getPreferenceCount(); i++) {
-                initSummary(pGrp.getPreference(i));
-            }
-        } else {
-            updatePrefSummary(p);
-        }
-    }
-
-	private void updatePrefSummary(Preference p) {
-        if (p instanceof EditTextPreference) {
-            etPref = (EditTextPreference) p;
-            if (p.getTitle().toString().contains("DelAppManager"))
-            {
-                p.setSummary("DelAppManager");
-            } else {
-				try {
-					sharedPref.saveToSharedPref("Setting", etPref.getText().trim());
-				} catch (Exception e) {
-					
-				}
-                p.setSummary(etPref.getText());
-            }
-        }
-		
-		if(p instanceof ListPreference){
-			listPref = (ListPreference)p;
-			listPref.setOnPreferenceChangeListener(new ListPreference.OnPreferenceChangeListener(){
-
-					@Override
-					public boolean onPreferenceChange(Preference pref, Object newValue) {
-                        listPref.setDefaultValue(newValue.toString());
-                        pref.setSummary(listPref.getEntry());
-						try {
-							sharedPref.saveToSharedPref("Theme", newValue.toString());
-                            MainUtils.restart(getActivity());
-                            
-						} catch (Exception e) {
-                            MainUtils.showMessage(getActivity(), e.toString());
-						}
-                        
-						return true;
-					}
-				});
-		}
-    }
-	
 	
 	@Override
 	public void onResume() {
@@ -162,5 +67,40 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 	public void onPause() {
 		super.onPause();
 		getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+	}
+	
+	
+	private void setUpAppVersion(){
+        try {
+            PackageManager pm = getActivity().getPackageManager();
+
+            PackageInfo packageInfo = pm.getPackageInfo(getActivity().getPackageName(), 0);
+
+            findPreference("check_update").setSummary(packageInfo.versionName);
+
+        } catch (PackageManager.NameNotFoundException e) {
+
+        }
+    }
+	
+	private void setSummaryPath(){
+		EditTextPreference edp = (EditTextPreference) findPreference(FOLDER);
+		try {
+			if(sp.getPath() == null){
+				
+				edp.setSummary(getResources().getString(R.string.summary_path));
+			}else{
+				edp.setSummary(getResources().getString(R.string.storage) + sp.getPath());
+			}
+			
+		} catch(Exception e){
+			
+		}
 	}
 }

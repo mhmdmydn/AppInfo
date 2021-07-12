@@ -5,16 +5,18 @@
 	android:layout_height="wrap_content"
 	android:orientation="vertical"
 	android:background="?attr/selectableItemBackground"
-	android:clickable="true"
-	android:focusable="true"
-	android:padding="2dp"
+	android:padding="@dimen/margin4"
 	android:id="@+id/ll_member">
 
 	<TextView
 		android:layout_height="wrap_content"
 		android:layout_width="wrap_content"
 		android:id="@+id/tv_member"
-		android:textSize="10dp"
-		android:text="Text"/>
+		android:textColor="?attr/primaryDescriptionColor"
+		android:textSize="@dimen/text_size_14"
+		android:singleLine="true"
+		android:textIsSelectable="true"
+		android:gravity="center_vertical"/>
+
 </LinearLayout>
 

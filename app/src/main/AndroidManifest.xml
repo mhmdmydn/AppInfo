@@ -21,6 +21,9 @@
     <!--lihat sambungan jaringan-->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
+    <!--DELETE_PACKAGES-->
+    <uses-permission android:name="android.permission.DELETE_PACKAGES"/>
+
     <application
         android:allowBackup="true"
         android:name="com.del.app.manager.App"
@@ -56,12 +59,16 @@
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name="com.del.app.manager.activity.MoreDetailActivity"
+            android:name="com.del.app.manager.activity.DetailActivity"
             android:label="Detail App"
             android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.del.app.manager.activity.SettingActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.del.app.manager.activity.ManifestActivity"
             android:screenOrientation="portrait"/>
 
         <provider

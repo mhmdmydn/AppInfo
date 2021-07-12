@@ -2,8 +2,11 @@ package com.del.app.manager;
 
 import android.app.Application;
 import com.del.app.manager.util.CrashHandler;
+import android.content.SharedPreferences;
+import com.unity3d.ads.UnityAds;
 
 public class App extends Application {
+	
 	
 	private static App singleton = null;
 
@@ -20,6 +23,6 @@ public class App extends Application {
 
         singleton = this;
         CrashHandler.init(singleton);
-    }
-	
+
+	}
 }

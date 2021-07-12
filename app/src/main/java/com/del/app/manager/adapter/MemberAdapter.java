@@ -8,11 +8,15 @@ import java.util.ArrayList;
 import android.view.LayoutInflater;
 import com.del.app.manager.R;
 import android.widget.TextView;
-import com.del.app.manager.util.MainUtils;
+import com.del.app.manager.util.MainUtil;
 import android.widget.LinearLayout;
+import android.graphics.Typeface;
+
 public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberVH> {
+	
 	private ArrayList<String> list = new ArrayList<>();
 	private Context con;
+	
 	public MemberAdapter(ArrayList<String> list, Context con){
 		this.list = list;
 		this.con = con;
@@ -27,12 +31,13 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberVH> 
 	@Override
 	public void onBindViewHolder(final MemberVH holder,final  int position) {
 		holder.tvMember.setText(list.get(position));
-		
+		holder.tvMember.setTypeface(Typeface.createFromAsset(con.getAssets(),"fonts/sans_medium.ttf"), 0);
 		holder.llLayout.setOnClickListener(new View.OnClickListener(){
 
 				@Override
 				public void onClick(View v) {
-					MainUtils.copyToClipBoardText(con, list.get(position));
+					MainUtil.copyToClipBoardText(con, list.get(position));
+					MainUtil.showSnackBar(v, "has been copied to clipboard");
 				}
 			});
 	}

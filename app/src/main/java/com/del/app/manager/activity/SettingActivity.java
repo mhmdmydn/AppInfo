@@ -6,59 +6,58 @@ import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import com.del.app.manager.fragment.SettingsFragment;
-import com.del.app.manager.util.HelperSharedPref;
+import com.del.app.manager.util.SharedPref;
 import androidx.appcompat.app.AppCompatDelegate;
+import com.del.app.manager.util.MainUtil;
 
 
-public class SettingActivity extends AppCompatActivity {
+public class SettingActivity extends BaseActivity {
 	
 	private Toolbar toolbar;
-	private String numMode;
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		try {
-			numMode = new HelperSharedPref(this).loadStringFromSharedPref("Theme");
-			switch(numMode){
-				case "0":
-					AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-					break;
-				case "1":
-					AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-					break;
-				case "2":
-					AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-					break;
-			}
-		} catch (Exception e) {
-
-		}
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_setting);
+		MainUtil.changeActivityFont(this, "sans_medium");
+		
 		initView();
 		initLogic();
+		initListener();
 	}
 
-	private void initLogic() {
+
+	@Override
+	public void initView() {
+		toolbar =(Toolbar) findViewById(R.id.toolbar);
+
+		//fragments
+		getFragmentManager()
+			.beginTransaction()
+			.replace(R.id.setting_content, new SettingsFragment())
+		    .commit();
+
+	}
+
+	@Override
+	public void initLogic() {
+		//MainUtil.changeActivityFont(this, "sans_medium");
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setTitle("Settings");
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+	}
+
+	@Override
+	public void initListener() {
+		toolbar.setNavigationOnClickListener(new View.OnClickListener() {
 				@Override public void onClick(View _v) {
 					onBackPressed();
 				}
 			});
-		//fragments
-		getFragmentManager()
-			.beginTransaction()
-			.replace(R.id.setting_content,
-					 new SettingsFragment()).commit();
 	}
-
-	private void initView() {
-		toolbar =(Toolbar) findViewById(R.id.toolbar);
-	}
-
+	
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();

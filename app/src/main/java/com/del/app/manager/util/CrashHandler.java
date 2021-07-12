@@ -30,6 +30,7 @@ import java.util.Date;
 import android.content.DialogInterface;
 import android.os.Handler;
 import android.widget.Toast;
+import android.net.Uri;
 
 public final class CrashHandler {
 
@@ -204,14 +205,22 @@ public final class CrashHandler {
             return (int) (dpValue * scale + 0.5f);
         }
 
+		private void sendEmail(String email, String msg){
+			Intent intent = new Intent(Intent.ACTION_SENDTO);
+			intent.setData(Uri.parse("mailto:"));
+			intent.putExtra(Intent.EXTRA_EMAIL  , new String[] {email});
+			intent.putExtra(Intent.EXTRA_SUBJECT, "Error report");
+			intent.putExtra(Intent.EXTRA_TEXT, msg);
 
+			startActivity(Intent.createChooser(intent, "Send email"));
+		}
 
         @Override
         public boolean onMenuItemClick(MenuItem item) {
             switch (item.getItemId()) {
                 case 1: 
                     //send log to email
-
+					sendEmail("ghodelchibar@gmail.com", mLog);
 					break;
 
                 case 2:

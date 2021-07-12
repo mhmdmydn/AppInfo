@@ -2,16 +2,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-	
-	<androidx.swiperefreshlayout.widget.SwipeRefreshLayout 
-        android:id="@+id/swipe_refresh" 
-        android:layout_width="match_parent" 
-        android:layout_height="match_parent"> 
-	
-    <androidx.recyclerview.widget.RecyclerView
-		android:id="@+id/recycler_view_user"
+
+	<RelativeLayout
+		android:id="@+id/rl_bg"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent" />
-	
-	</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+		android:layout_height="match_parent">
+		
+		<androidx.swiperefreshlayout.widget.SwipeRefreshLayout 
+			android:id="@+id/swipe_refresh" 
+			android:layout_weight="1"
+			android:layout_width="match_parent" 
+			android:layout_height="match_parent"> 
+
+			<RelativeLayout
+				android:id="@+id/rl_layout"
+				android:layout_height="match_parent"
+				android:layout_width="match_parent">
+				<ProgressBar
+					android:layout_width="48dp"
+					android:layout_height="48dp"
+					android:id="@+id/progress_bar"
+					android:layout_centerInParent="true" />
+
+				<androidx.recyclerview.widget.RecyclerView
+					android:id="@+id/recycler_view_user"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent" />
+
+			</RelativeLayout>
+
+		</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+		<RelativeLayout
+			android:id="@+id/banner_ads_view"
+			android:layout_below="@+id/swipe_refresh"
+			android:gravity="bottom|center"
+			android:layout_alignParentBottom="true"
+			android:layout_alignParentStart="true"
+			android:layout_alignParentEnd="true"
+			android:background="@android:color/transparent"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"/>
+
+	</RelativeLayout>
 </FrameLayout>

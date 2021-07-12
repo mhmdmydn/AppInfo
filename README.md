@@ -1,10 +1,16 @@
 # AppInfo
 Simple Read information of app installed and system
 
-#Screenshoot
-![alt text](https://github.com/MuhammadMayudin/AppInfo/raw/main/image/HiShoot_20210127_222822.png)
-![alt text](https://github.com/MuhammadMayudin/AppInfo/raw/main/image/HiShoot_20210127_222851.png)
+## Screenshots
 
-#Demo
+| Splash | MainActivity | DetailApplication |
+|:-:|:-:|:-:|
+| ![Splash](/img/ss1.png?raw=true) | ![MainActivity](/img/ss2.png?raw=true) | ![DetailApplication](/img/ss3.png?raw=true)
+
+## Demo APK
+
+[<img src="/img/direct-apk-download.png?raw=true"
+      alt="Direct apk download"
+      height="80">](https://github.com/mhmdmydn/AppInfo/app/build/outputs/apk/debug/app-debug.apk?raw=true)
 
 
